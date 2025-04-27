@@ -8,10 +8,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setThemeState] = React.useState<'light' | 'dark'>('light');
 
   React.useEffect(() => {
-    // Get saved theme preference from localStorage
+
     const savedTheme = localStorage.getItem('crm_theme') as 'light' | 'dark' | null;
-    
-    // If no saved preference, use system preference
+  
     if (!savedTheme) {
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setThemeState(systemPrefersDark ? 'dark' : 'light');

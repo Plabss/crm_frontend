@@ -273,7 +273,7 @@ const ReminderForm: React.FC = () => {
             <div className="space-y-2">
               <Label htmlFor="clientId">Client</Label>
               <Select
-                value={formData.clientId || undefined}  
+                value={formData.clientId || undefined}
                 onValueChange={(value) => handleSelectChange('clientId', value || null)}
               >
                 <SelectTrigger>
@@ -294,8 +294,8 @@ const ReminderForm: React.FC = () => {
             <div className="space-y-2">
               <Label htmlFor="projectId">Project</Label>
               <Select
-                value={formData.projectId || undefined} 
-                onValueChange={(value) => handleSelectChange('projectId', value || null)} 
+                value={formData.projectId || undefined}
+                onValueChange={(value) => handleSelectChange('projectId', value || null)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a project" />
@@ -346,18 +346,20 @@ const ReminderForm: React.FC = () => {
               )}
             </div>
 
-            <div className="space-y-2 flex items-end">
-              <div className="flex items-center space-x-2 h-10">
-                <Checkbox
-                  id="completed"
-                  checked={formData.completed}
-                  onCheckedChange={(checked) =>
-                    handleCheckboxChange('completed', checked as boolean)
-                  }
-                />
-                <Label htmlFor="completed">Mark as completed</Label>
+            {isEditing && (
+              <div className="space-y-2 flex items-end">
+                <div className="flex items-center space-x-2 h-10">
+                  <Checkbox
+                    id="completed"
+                    checked={formData.completed}
+                    onCheckedChange={(checked) =>
+                      handleCheckboxChange('completed', checked as boolean)
+                    }
+                  />
+                  <Label htmlFor="completed">Mark as completed</Label>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="flex gap-4 justify-end">

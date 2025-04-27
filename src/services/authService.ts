@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const mockDelay = () => new Promise(resolve => setTimeout(resolve, 500));
@@ -35,3 +34,9 @@ export const authService = {
       return true;
     }
   };
+
+export const getAuthToken = (): string | null => {
+    const crmUser = JSON.parse(localStorage.getItem('crm_user') || '{}');
+    return crmUser?.data?.token || null;
+};
+  
