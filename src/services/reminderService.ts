@@ -99,11 +99,13 @@ export const reminderService = {
   toggleComplete: async (id: string, userId: string): Promise<Reminder> => {
     const crmUser = JSON.parse(localStorage.getItem('crm_user'));
     const token = crmUser?.data.token;
-    const response = await axios.post(`${API_URL}/reminders/${id}/toggle`, {}, {
+  
+    const response = await axios.post(`${API_URL}/reminders/toggle/${id}`, {}, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
+  
     return response.data;
-  }
+  }  
 };

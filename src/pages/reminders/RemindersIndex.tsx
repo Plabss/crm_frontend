@@ -34,7 +34,7 @@ const RemindersIndex: React.FC = () => {
           // Fetch all reminders
           const remindersData = await reminderService.getAll(user.id);
           setReminders(remindersData);
-          
+
           // Fetch all clients to get their names
           const clientsData = await clientService.getAll(user.id);
           const clientsMap = clientsData.reduce((acc, client) => {
@@ -42,7 +42,7 @@ const RemindersIndex: React.FC = () => {
             return acc;
           }, {} as Record<string, Client>);
           setClients(clientsMap);
-          
+
           // Fetch all projects to get their titles
           const projectsData = await projectService.getAll(user.id);
           const projectsMap = projectsData.reduce((acc, project) => {
@@ -64,43 +64,43 @@ const RemindersIndex: React.FC = () => {
 
   useEffect(() => {
     let filtered = [...reminders];
-    
+
     // Apply tab filter
     if (tabValue === 'upcoming') {
-      filtered = filtered.filter(reminder => 
-        !reminder.completed && 
+      filtered = filtered.filter(reminder =>
+        !reminder.completed &&
         isBefore(new Date(), new Date(reminder.dueDate))
       );
     } else if (tabValue === 'completed') {
       filtered = filtered.filter(reminder => reminder.completed);
     }
-    
+
     // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(reminder => 
+      filtered = filtered.filter(reminder =>
         reminder.title.toLowerCase().includes(query) ||
         (reminder.description?.toLowerCase().includes(query)) ||
         (reminder.clientId && clients[reminder.clientId]?.name.toLowerCase().includes(query)) ||
         (reminder.projectId && projects[reminder.projectId]?.title.toLowerCase().includes(query))
       );
     }
-    
+
     // Sort by due date
     filtered.sort((a, b) => {
       // Sort completed items to the end
       if (a.completed && !b.completed) return 1;
       if (!a.completed && b.completed) return -1;
-      
+
       // Sort by due date (oldest first for non-completed)
       if (!a.completed) {
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       }
-      
+
       // Sort completed by due date (newest completed first)
       return new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime();
     });
-    
+
     setFilteredReminders(filtered);
   }, [searchQuery, reminders, clients, projects, tabValue]);
 
@@ -110,12 +110,12 @@ const RemindersIndex: React.FC = () => {
 
   const handleToggleComplete = async (id: string, currentStatus: boolean) => {
     if (!user) return;
-    
+
     try {
       const updatedReminder = await reminderService.toggleComplete(id, user.id);
       if (updatedReminder) {
-        setReminders(prevReminders => 
-          prevReminders.map(reminder => 
+        setReminders(prevReminders =>
+          prevReminders.map(reminder =>
             reminder.id === id ? { ...reminder, completed: !currentStatus } : reminder
           )
         );
@@ -127,9 +127,10 @@ const RemindersIndex: React.FC = () => {
     }
   };
 
+
   const handleDelete = async (id: string) => {
     if (!user) return;
-    
+
     try {
       const success = await reminderService.delete(id, user.id);
       if (success) {
@@ -192,7 +193,7 @@ const RemindersIndex: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            
+
             <Tabs value={tabValue} onValueChange={(v) => setTabValue(v as any)} className="w-full">
               <TabsList>
                 <TabsTrigger value="all">All</TabsTrigger>
@@ -217,7 +218,7 @@ const RemindersIndex: React.FC = () => {
                 {filteredReminders.map((reminder) => {
                   const dueDate = new Date(reminder.dueDate);
                   const isOverdue = dueDate < new Date() && !reminder.completed;
-                  
+
                   return (
                     <TableRow key={reminder.id} className={reminder.completed ? 'opacity-60' : ''}>
                       <TableCell>
@@ -270,8 +271,8 @@ const RemindersIndex: React.FC = () => {
                               <span className="sr-only">Edit</span>
                             </Link>
                           </Button>
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
                             onClick={() => handleDelete(reminder.id)}
                           >
