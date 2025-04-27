@@ -6,7 +6,7 @@ const mockDelay = () => new Promise(resolve => setTimeout(resolve, 500));
 export const authService = {
     login: async (credentials: { email: string; password: string }) => {
       try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
+        const response = await axios.post('http://localhost:5050/api/auth/login', credentials);
         return response.data;
       } catch (error: any) {
         if (error.response && error.response.status === 401) {
@@ -19,7 +19,7 @@ export const authService = {
     
     register: async (userData: { name: string; email: string; password: string }) => {
       try {
-        const response = await axios.post('http://localhost:5000/api/auth/signup', userData);
+        const response = await axios.post('http://localhost:5050/api/auth/signup', userData);
         return response.data
       } catch (error: any) {
         if (error.response && error.response.status === 400) {

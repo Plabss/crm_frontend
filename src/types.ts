@@ -28,7 +28,7 @@ export interface Client {
   createdAt: string;
 }
 
-export type ProjectStatus = "planned" | "in_progress" | "on_hold" | "completed" | "cancelled";
+export type ProjectStatus = "PLANNED" | "IN_PROGRESS" | "ON_HOLD" | "COMPLETED" | "CANCELLED";
 
 export interface Project {
   id: string;

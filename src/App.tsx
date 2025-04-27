@@ -15,6 +15,17 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
+import ClientsIndex from "./pages/clients/ClientsIndex";
+import ClientForm from "./pages/clients/ClientForm";
+import ClientDetail from "./pages/clients/ClientDetail";
+
+import ProjectsIndex from "./pages/projects/ProjectsIndex";
+import ProjectForm from "./pages/projects/ProjectForm";
+import ProjectDetail from "./pages/projects/ProjectDetail";
+
+import RemindersIndex from "./pages/reminders/RemindersIndex";
+import ReminderForm from "./pages/reminders/ReminderForm";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -39,6 +50,26 @@ const App = () => (
                 </ProtectedRoute>
               }>
                 <Route path="/" element={<Dashboard />} />
+
+
+                {/* Client Routes */}
+                <Route path="/clients" element={<ClientsIndex />} />
+                <Route path="/clients/new" element={<ClientForm />} />
+                <Route path="/clients/:id" element={<ClientDetail />} />
+                <Route path="/clients/:id/edit" element={<ClientForm />} />
+
+
+                {/* Project Routes */}
+                <Route path="/projects" element={<ProjectsIndex />} />
+                <Route path="/projects/new" element={<ProjectForm />} />
+                <Route path="/projects/:id" element={<ProjectDetail />} />
+                <Route path="/projects/:id/edit" element={<ProjectForm />} />
+                
+                {/* Reminder Routes */}
+                <Route path="/reminders" element={<RemindersIndex />} />
+                <Route path="/reminders/new" element={<ReminderForm />} />
+                <Route path="/reminders/:id/edit" element={<ReminderForm />} />
+
               </Route>
               
               {/* Catch-all / 404 */}

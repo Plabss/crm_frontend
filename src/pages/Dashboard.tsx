@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
     <div className="w-full">
       <PageHeader
         title="Dashboard"
-        description={`Welcome back, ${user?.user.name}`}
+        description={`Welcome back, ${user?.data?.user?.name}`}
       />
 
       <div className="grid gap-6 md:grid-cols-3 w-full">

@@ -30,7 +30,7 @@ export const MainLayout: React.FC = () => {
           <SidebarContent className="flex flex-col h-full">
             <div className="p-6">
               <h1 className="text-2xl font-bold text-primary">FreelanceFlow</h1>
-              <p className="text-sm text-muted-foreground">Welcome, {user?.user.name}</p>
+              <p className="text-sm text-muted-foreground">Welcome, {user?.data.user?.name}</p>
             </div>
             
             <nav className="flex-1 px-3">

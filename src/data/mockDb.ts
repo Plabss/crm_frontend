@@ -176,120 +176,120 @@ export const clientService = {
   }
 };
 
-export const projectService = {
-  getAll: async (userId: string): Promise<Project[]> => {
-    await mockDelay();
-    return mockDb.projects.filter(project => project.userId === userId);
-  },
-  getById: async (id: string, userId: string): Promise<Project> => {
-    await mockDelay();
-    const project = mockDb.projects.find(project => project.id === id && project.userId === userId);
-    if (!project) {
-      throw new Error("Project not found");
-    }
-    return project;
-  },
-  getByClient: async (clientId: string, userId: string): Promise<Project[]> => {
-    await mockDelay();
-    return mockDb.projects.filter(project => project.clientId === clientId && project.userId === userId);
-  },
-  create: async (projectData: Omit<Project, 'id'>): Promise<Project> => {
-    await mockDelay();
-    const newProject = {
-      id: uuidv4(),
-      ...projectData,
-      createdAt: getCreatedAt()
-    };
-    mockDb.projects.push(newProject);
-    return newProject;
-  },
-  update: async (id: string, projectData: Omit<Project, 'id'>, userId: string): Promise<Project> => {
-    await mockDelay();
-    const projectIndex = mockDb.projects.findIndex(project => project.id === id && project.userId === userId);
-    if (projectIndex === -1) {
-      throw new Error("Project not found");
-    }
-    const updatedProject = { id, ...projectData, userId };
-    mockDb.projects[projectIndex] = updatedProject;
-    return updatedProject;
-  },
-  delete: async (id: string, userId: string): Promise<boolean> => {
-    await mockDelay();
-    const initialLength = mockDb.projects.length;
-    mockDb.projects = mockDb.projects.filter(project => project.id !== id || project.userId !== userId);
-    return mockDb.projects.length < initialLength;
-  },
-};
+// export const projectService = {
+//   getAll: async (userId: string): Promise<Project[]> => {
+//     await mockDelay();
+//     return mockDb.projects.filter(project => project.userId === userId);
+//   },
+//   getById: async (id: string, userId: string): Promise<Project> => {
+//     await mockDelay();
+//     const project = mockDb.projects.find(project => project.id === id && project.userId === userId);
+//     if (!project) {
+//       throw new Error("Project not found");
+//     }
+//     return project;
+//   },
+//   getByClient: async (clientId: string, userId: string): Promise<Project[]> => {
+//     await mockDelay();
+//     return mockDb.projects.filter(project => project.clientId === clientId && project.userId === userId);
+//   },
+//   create: async (projectData: Omit<Project, 'id'>): Promise<Project> => {
+//     await mockDelay();
+//     const newProject = {
+//       id: uuidv4(),
+//       ...projectData,
+//       createdAt: getCreatedAt()
+//     };
+//     mockDb.projects.push(newProject);
+//     return newProject;
+//   },
+//   update: async (id: string, projectData: Omit<Project, 'id'>, userId: string): Promise<Project> => {
+//     await mockDelay();
+//     const projectIndex = mockDb.projects.findIndex(project => project.id === id && project.userId === userId);
+//     if (projectIndex === -1) {
+//       throw new Error("Project not found");
+//     }
+//     const updatedProject = { id, ...projectData, userId };
+//     mockDb.projects[projectIndex] = updatedProject;
+//     return updatedProject;
+//   },
+//   delete: async (id: string, userId: string): Promise<boolean> => {
+//     await mockDelay();
+//     const initialLength = mockDb.projects.length;
+//     mockDb.projects = mockDb.projects.filter(project => project.id !== id || project.userId !== userId);
+//     return mockDb.projects.length < initialLength;
+//   },
+// };
 
-export const reminderService = {
-  getAll: async (userId: string): Promise<Reminder[]> => {
-    await mockDelay();
-    return mockDb.reminders.filter(reminder => reminder.userId === userId);
-  },
-  getUpcoming: async (userId: string): Promise<Reminder[]> => {
-    await mockDelay();
-    const now = new Date();
-    const sevenDaysLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    return mockDb.reminders.filter(reminder => 
-      reminder.userId === userId && 
-      new Date(reminder.dueDate) <= sevenDaysLater && 
-      new Date(reminder.dueDate) >= now
-    );
-  },
-  getByClient: async (clientId: string, userId: string): Promise<Reminder[]> => {
-    await mockDelay();
-    return mockDb.reminders.filter(reminder => reminder.clientId === clientId && reminder.userId === userId);
-  },
-  getByProject: async (projectId: string, userId: string): Promise<Reminder[]> => {
-    await mockDelay();
-    return mockDb.reminders.filter(reminder => reminder.projectId === projectId && reminder.userId === userId);
-  },
-  create: async (reminderData: Omit<Reminder, 'id'>): Promise<Reminder> => {
-    await mockDelay();
-    const newReminder = {
-      id: uuidv4(),
-      ...reminderData,
-      createdAt: getCreatedAt()
-    };
-    mockDb.reminders.push(newReminder);
-    return newReminder;
-  },
-  update: async (id: string, reminderData: Omit<Reminder, 'id'>, userId: string): Promise<Reminder> => {
-    await mockDelay();
-    const reminderIndex = mockDb.reminders.findIndex(reminder => reminder.id === id && reminder.userId === userId);
-    if (reminderIndex === -1) {
-      throw new Error("Reminder not found");
-    }
-    const updatedReminder = { id, ...reminderData, userId };
-    mockDb.reminders[reminderIndex] = updatedReminder;
-    return updatedReminder;
-  },
-  delete: async (id: string, userId: string): Promise<boolean> => {
-    await mockDelay();
-    const initialLength = mockDb.reminders.length;
-    mockDb.reminders = mockDb.reminders.filter(reminder => reminder.id !== id || reminder.userId !== userId);
-    return mockDb.reminders.length < initialLength;
-  },
-  getById: async (id: string, userId: string): Promise<Reminder> => {
-    await mockDelay();
-    const reminder = mockDb.reminders.find(r => r.id === id && r.userId === userId);
-    if (!reminder) {
-      throw new Error("Reminder not found");
-    }
-    return reminder;
-  },
-  toggleComplete: async (id: string, userId: string): Promise<Reminder> => {
-    await mockDelay();
-    const reminderIndex = mockDb.reminders.findIndex(reminder => reminder.id === id && reminder.userId === userId);
-    if (reminderIndex === -1) {
-      throw new Error("Reminder not found");
-    }
-    const reminder = mockDb.reminders[reminderIndex];
-    const updatedReminder = { ...reminder, completed: !reminder.completed };
-    mockDb.reminders[reminderIndex] = updatedReminder;
-    return updatedReminder;
-  },
-};
+// export const reminderService = {
+//   getAll: async (userId: string): Promise<Reminder[]> => {
+//     await mockDelay();
+//     return mockDb.reminders.filter(reminder => reminder.userId === userId);
+//   },
+//   getUpcoming: async (userId: string): Promise<Reminder[]> => {
+//     await mockDelay();
+//     const now = new Date();
+//     const sevenDaysLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+//     return mockDb.reminders.filter(reminder => 
+//       reminder.userId === userId && 
+//       new Date(reminder.dueDate) <= sevenDaysLater && 
+//       new Date(reminder.dueDate) >= now
+//     );
+//   },
+//   getByClient: async (clientId: string, userId: string): Promise<Reminder[]> => {
+//     await mockDelay();
+//     return mockDb.reminders.filter(reminder => reminder.clientId === clientId && reminder.userId === userId);
+//   },
+//   getByProject: async (projectId: string, userId: string): Promise<Reminder[]> => {
+//     await mockDelay();
+//     return mockDb.reminders.filter(reminder => reminder.projectId === projectId && reminder.userId === userId);
+//   },
+//   create: async (reminderData: Omit<Reminder, 'id'>): Promise<Reminder> => {
+//     await mockDelay();
+//     const newReminder = {
+//       id: uuidv4(),
+//       ...reminderData,
+//       createdAt: getCreatedAt()
+//     };
+//     mockDb.reminders.push(newReminder);
+//     return newReminder;
+//   },
+//   update: async (id: string, reminderData: Omit<Reminder, 'id'>, userId: string): Promise<Reminder> => {
+//     await mockDelay();
+//     const reminderIndex = mockDb.reminders.findIndex(reminder => reminder.id === id && reminder.userId === userId);
+//     if (reminderIndex === -1) {
+//       throw new Error("Reminder not found");
+//     }
+//     const updatedReminder = { id, ...reminderData, userId };
+//     mockDb.reminders[reminderIndex] = updatedReminder;
+//     return updatedReminder;
+//   },
+//   delete: async (id: string, userId: string): Promise<boolean> => {
+//     await mockDelay();
+//     const initialLength = mockDb.reminders.length;
+//     mockDb.reminders = mockDb.reminders.filter(reminder => reminder.id !== id || reminder.userId !== userId);
+//     return mockDb.reminders.length < initialLength;
+//   },
+//   getById: async (id: string, userId: string): Promise<Reminder> => {
+//     await mockDelay();
+//     const reminder = mockDb.reminders.find(r => r.id === id && r.userId === userId);
+//     if (!reminder) {
+//       throw new Error("Reminder not found");
+//     }
+//     return reminder;
+//   },
+//   toggleComplete: async (id: string, userId: string): Promise<Reminder> => {
+//     await mockDelay();
+//     const reminderIndex = mockDb.reminders.findIndex(reminder => reminder.id === id && reminder.userId === userId);
+//     if (reminderIndex === -1) {
+//       throw new Error("Reminder not found");
+//     }
+//     const reminder = mockDb.reminders[reminderIndex];
+//     const updatedReminder = { ...reminder, completed: !reminder.completed };
+//     mockDb.reminders[reminderIndex] = updatedReminder;
+//     return updatedReminder;
+//   },
+// };
 
 // export const dashboardService = {
 //   getSummary: async (userId: string): Promise<DashboardSummary> => {
